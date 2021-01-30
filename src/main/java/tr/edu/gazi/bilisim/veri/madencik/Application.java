@@ -171,6 +171,7 @@ public class Application {
 
     }
 
+
     public static Instance newInstance(DataModel dataModel, Instances instances){
         double[] instanceValue = new double[instances.numAttributes()];
         instanceValue[0]=dataModel.getAcilis();

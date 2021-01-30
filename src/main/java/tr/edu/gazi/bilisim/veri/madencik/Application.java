@@ -11,6 +11,7 @@ import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.trees.J48;
+import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.Utils;
@@ -43,14 +44,18 @@ public class Application {
                 dataModel.setSinif(0);
             } else if (dataModel.getFark() < -10 && dataModel.getFark() >= -20) {
                 dataModel.setSinif(1);
-            } else if (dataModel.getFark() < 0 && dataModel.getFark() >= -10) {
+            } else if (dataModel.getFark() < -5 && dataModel.getFark() >= -10) {
                 dataModel.setSinif(2);
-            } else if (dataModel.getFark() < 10 && dataModel.getFark() >= 0) {
+            } else if (dataModel.getFark() < 0 && dataModel.getFark() >= -5) {
                 dataModel.setSinif(3);
-            } else if (dataModel.getFark() < 20 && dataModel.getFark() >= 10) {
+            } else if (dataModel.getFark() < 5 && dataModel.getFark() >= 0) {
                 dataModel.setSinif(4);
-            } else {
+            } else if (dataModel.getFark() < 10 && dataModel.getFark() >= 5) {
                 dataModel.setSinif(5);
+            } else if (dataModel.getFark() < 20 && dataModel.getFark() >= 10) {
+                dataModel.setSinif(6);
+            } else {
+                dataModel.setSinif(7);
             }
             lstCleanData.add(dataModel);
         });
@@ -92,16 +97,23 @@ public class Application {
         Instance second = data.instance(1);
 
 
+        DataModel predictiveModel= new DataModel();
+        predictiveModel.setAcilis(23000);
+        predictiveModel.setDusuk(21000);
+        predictiveModel.setYuksek(24000);
+        predictiveModel.setHacim(360000000);
+        Instance predictiveInstance= newInstance(predictiveModel, data);
+
+
         //******************** Prediction ********************
         Classifier ibk = new J48();
         ibk.buildClassifier(data);
 
         double class1 = ibk.classifyInstance(first);
         double class2 = ibk.classifyInstance(second);
+        double predictiveClass= ibk.classifyInstance(predictiveInstance);
 
-
-        System.out.println("first: " + class1 + "\nsecond: " + class2);
-
+        System.out.println("first: " + class1 + "\nsecond: " + class2 +"\n predictiveClass: "+ predictiveClass);
 
         //******************  MLP Model ******************
         //network variables
@@ -157,5 +169,19 @@ public class Application {
         eval.crossValidateModel(knn, data, 10, new Random(1));
         System.out.println(eval.toSummaryString("\nResults\n======\n", true));
 
+    }
+
+
+    public static Instance newInstance(DataModel dataModel, Instances instances){
+        double[] instanceValue = new double[instances.numAttributes()];
+        instanceValue[0]=dataModel.getAcilis();
+        instanceValue[1]= dataModel.getYuksek();
+        instanceValue[2]= dataModel.getDusuk();
+        instanceValue[3]=0;
+        instanceValue[4]= dataModel.getHacim();
+        instanceValue[5]=0;
+        DenseInstance denseInstance = new DenseInstance(1.0, instanceValue);
+        denseInstance.setDataset(instances);
+        return denseInstance;
     }
 }

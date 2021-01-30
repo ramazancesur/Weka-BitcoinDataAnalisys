@@ -1,6 +1,6 @@
 package tr.edu.gazi.bilisim.veri.madencik.helper;
 
-import tr.edu.gazi.bilisim.veri.madencik.costomAnnotation.DataMatch;
+import tr.edu.gazi.bilisim.veri.madencik.customAnnotation.DataMatch;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

@@ -1,4 +1,4 @@
-package tr.edu.gazi.bilisim.veri.madencik.costomAnnotation;
+package tr.edu.gazi.bilisim.veri.madencik.customAnnotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
